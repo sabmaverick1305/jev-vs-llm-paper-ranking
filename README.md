@@ -16,9 +16,9 @@ Topic: *looped transformers*, 10 arXiv candidates, graded 0–4 by a human.
 
 | | LLM (`anthropic/claude-sonnet-5.5`) | JEV (`typesafe/jev-1.13`) |
 |---|---|---|
-| Valid trials | 2 | 6 |
+| Valid trials (of 5) | 1 | 5 |
 | Ranking quality (mean NDCG@5) | **1.000** | 0.978 |
-| Median latency | 4.69 s | **0.59 s** |
+| Median latency | 4.93 s | **0.54 s** |
 | Cost per result | $0.0227 | **$0.00026** (~88× cheaper) |
 
 Both rankers put the human's top paper first and agree on 4 of their 5 picks.
@@ -26,7 +26,7 @@ JEV's only miss was placing the grade-3 paper third instead of second.
 
 **Read these numbers with care:**
 
-- **Small sample.** The LLM has only 2 successful trials. Its other attempts
+- **Small sample.** The LLM has only 1 successful trial. Its other 4 attempts
   failed because the OpenRouter account ran out of credit, not because of the
   model.
 - **Coarse labels.** 7 of the 10 papers share the same grade (2), so any top 5
