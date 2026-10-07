@@ -5,7 +5,7 @@ requires-python = ">=3.12"
 [[package]]
 name = "ai-engg-day1"
 version = "0.1.0"
-source = { editable = "." }
+source = { virtual = "." }
 dependencies = [
     { name = "httpx" },
     { name = "python-dotenv" },

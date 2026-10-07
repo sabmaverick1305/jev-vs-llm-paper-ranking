@@ -12,6 +12,6 @@ dependencies = [
     "python-dotenv>=1.2.4",
 ]
 
-[build-system]
-requires = ["uv_build>=0.12.1,<0.13.0"]
-build-backend = "uv_build"
+[tool.uv]
+# Scripts run directly from src/; nothing to build or install.
+package = false

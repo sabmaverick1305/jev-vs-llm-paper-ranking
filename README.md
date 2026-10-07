@@ -31,7 +31,7 @@ account ran out of credit, so those trials were dropped. Across all 5 JEV
 trials, the score was 0.978 every time and the top three picks never changed.
 Only 4th and 5th place varied, always among papers graded 2. Median JEV
 latency was 0.61 s. The run's `config.json` records this. `TRIALS` is set to 1 in
-[benchmark_rankers.py](src/ai_engg_day1/benchmark_rankers.py) to match.
+[benchmark_rankers.py](src/benchmark_rankers.py) to match.
 
 **Read these numbers with care:**
 
@@ -52,7 +52,7 @@ abstract. They score every paper on two rubrics, each from 0 to 4:
   standard Transformers but is new to the topic.
 
 Rubrics and candidate text are defined once in
-[benchmark_rankers.py](src/ai_engg_day1/benchmark_rankers.py) and sent to:
+[benchmark_rankers.py](src/benchmark_rankers.py) and sent to:
 
 | Ranker | OpenRouter endpoint | How scores come back |
 |---|---|---|
@@ -64,7 +64,7 @@ Every response is validated: all scores must be present, numeric and within
 top 5 from its scores: drop papers with relevance below 2.5, then rank by
 `0.4 × relevance + 0.6 × learning`. That top 5 is scored with **NDCG@5**
 against the human grades in
-[ranking_labels.json](src/ai_engg_day1/ranking_labels.json). 1.0 means the
+[ranking_labels.json](src/ranking_labels.json). 1.0 means the
 best possible order.
 
 Each trial alternates which ranker goes first. Every run is saved to
@@ -88,8 +88,8 @@ cp .env.example .env    # then add your OPENROUTER_API_KEY
 Run the benchmark, then redraw the charts:
 
 ```bash
-uv run python src/ai_engg_day1/benchmark_rankers.py
-uv run python src/ai_engg_day1/plot_benchmark.py
+uv run python src/benchmark_rankers.py
+uv run python src/plot_benchmark.py
 ```
 
 The charts pool every saved run that used the same candidates, rubrics and
@@ -104,12 +104,12 @@ supports structured outputs.
 1. Fetch candidates from arXiv (10 works well):
 
    ```bash
-   uv run python src/ai_engg_day1/fetch_candidates.py "your topic" 10
+   uv run python src/fetch_candidates.py "your topic" 10
    ```
 
 2. Set `TOPIC` in `benchmark_rankers.py`. If your topic isn't a Transformer
    variant, also edit the reader description in the `learning` rubric.
-3. Grade every paper in `src/ai_engg_day1/ranking_labels.json` with a whole
+3. Grade every paper in `src/ranking_labels.json` with a whole
    number from 0 (not useful) to 4 (best starting point), keyed by `paper_id`.
    Do this yourself, before looking at either ranker's output. Using the full
    range makes the comparison more informative.
@@ -118,7 +118,7 @@ supports structured outputs.
 ## Project layout
 
 ```
-src/ai_engg_day1/
+src/
   benchmark_rankers.py               JEV vs LLM benchmark
   plot_benchmark.py                  Light/dark SVG charts → docs/
   fetch_candidates.py                Fetch arXiv candidates for a topic

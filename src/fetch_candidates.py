@@ -1,6 +1,6 @@
 """Fetch arXiv candidates for the benchmark.
 
-Usage: uv run python src/ai_engg_day1/fetch_candidates.py "your topic" [count]
+Usage: uv run python src/fetch_candidates.py "your topic" [count]
 """
 import json
 import re
