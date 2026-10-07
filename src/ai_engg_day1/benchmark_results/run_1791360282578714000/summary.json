@@ -1,0 +1,32 @@
+{
+  "models": {
+    "llm": {
+      "attempts": 5,
+      "valid_output_rate": 0.2,
+      "median_attempt_ms": 303.83,
+      "median_valid_ms": 4925.02,
+      "billing_complete": false,
+      "reported_cost_total_usd": 0.022728,
+      "cost_per_valid_result_usd": null,
+      "mean_ndcg_at_5": 1.0
+    },
+    "jev": {
+      "attempts": 5,
+      "valid_output_rate": 1.0,
+      "median_attempt_ms": 539.72,
+      "median_valid_ms": 539.72,
+      "billing_complete": true,
+      "reported_cost_total_usd": 0.00128835,
+      "cost_per_valid_result_usd": 0.00025767,
+      "mean_ndcg_at_5": 0.9775892483828582
+    }
+  },
+  "overlap": [
+    {
+      "trial": 1,
+      "shared_papers": 4,
+      "llm_selected": 5,
+      "jev_selected": 5
+    }
+  ]
+}
