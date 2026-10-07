@@ -91,12 +91,10 @@ supports structured outputs.
 
 ### Try your own topic
 
-1. Fetch candidates from arXiv (up to 10 works well):
+1. Fetch candidates from arXiv (10 works well):
 
    ```bash
-   uv run python -c "import json; from ai_engg_day1.main import search_arxiv; \
-   print(json.dumps(search_arxiv('your topic', 10), indent=2))" \
-   > src/ai_engg_day1/looped_transformer_candidates.json
+   uv run python src/ai_engg_day1/fetch_candidates.py "your topic" 10
    ```
 
 2. Set `TOPIC` in `benchmark_rankers.py`. If your topic isn't a Transformer
@@ -107,44 +105,16 @@ supports structured outputs.
    range makes the comparison more informative.
 4. Run the benchmark and plot as above.
 
-## Also in this repo: a research API
-
-The benchmark grew out of a small FastAPI service that searches arXiv and
-summarizes abstracts with Claude.
-
-| Endpoint | What it does |
-|---|---|
-| `POST /research` | Searches arXiv and returns up to 5 papers, optionally with structured, abstract-only summaries |
-| `POST /research/agent` | Lets Claude decide when to search (up to 3 searches), then answers with cited paper IDs |
-| `GET /health` | Liveness check |
-
-It needs `ANTHROPIC_API_KEY` and `ANTHROPIC_MODEL` in `.env`:
-
-```bash
-uv run uvicorn ai_engg_day1.main:app --reload --port 8000
-curl -sS localhost:8000/research -H 'Content-Type: application/json' \
-  -d '{"topic":"speculative decoding","max_results":5,"summarize":true}'
-```
-
-Interactive docs are at http://localhost:8000/docs.
-[jev_rank.py](src/ai_engg_day1/jev_rank.py) is a standalone example that
-ranks live arXiv results with JEV alone.
-
-Limits: summaries use abstracts only, never full papers. JSON validation checks
-structure and paper IDs, not whether a claim is true. arXiv requests are paced
-within a single process, so run one uvicorn worker.
-
 ## Project layout
 
 ```
 src/ai_engg_day1/
   benchmark_rankers.py               JEV vs LLM benchmark
   plot_benchmark.py                  Light/dark SVG charts → docs/
+  fetch_candidates.py                Fetch arXiv candidates for a topic
   looped_transformer_candidates.json Candidate papers
   ranking_labels.json                Human grades (0–4)
   benchmark_results/                 One folder per run
-  main.py, agent.py, core.py         Research API
-  jev_rank.py                        Standalone JEV ranking example
 docs/                                Generated charts
 ```
 
@@ -152,4 +122,3 @@ docs/                                Generated charts
 
 - [arXiv API user manual](https://info.arxiv.org/help/api/user-manual.html)
 - [OpenRouter structured outputs](https://openrouter.ai/docs/features/structured-outputs)
-- [Anthropic Python SDK](https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/python)
