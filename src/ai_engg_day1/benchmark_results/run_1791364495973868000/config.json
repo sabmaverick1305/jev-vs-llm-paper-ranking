@@ -281,7 +281,7 @@
     }
   },
   "fingerprint": "bd38b5121307b4a2c5c0eca8b2729de9013fc4301cfbb38452b6ec4ee5ea816d",
-  "trials": 5,
+  "trials": 1,
   "labels": {
     "2610.07591v1": 2,
     "2409.15647v5": 3,
@@ -293,5 +293,6 @@
     "2605.30757v1": 2,
     "2604.15259v2": 2,
     "2609.37379v1": 2
-  }
+  },
+  "note": "Trial 1 of a 5-trial run. Trials 2-5 were dropped because every LLM request in them failed with HTTP 402 (OpenRouter account out of credit)."
 }

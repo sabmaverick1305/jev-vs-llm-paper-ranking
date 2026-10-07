@@ -16,7 +16,7 @@ load_dotenv()
 HERE = Path(__file__).resolve().parent
 
 TOPIC = "looped transformers"
-TRIALS = 5
+TRIALS = 1
 
 MODELS = {
     "llm": os.environ["BENCH_LLM_MODEL"],

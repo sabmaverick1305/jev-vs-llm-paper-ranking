@@ -96,7 +96,7 @@ def render(theme, models, stats, runs_used):
     x = 24
     for kind, label in (("llm", "LLM"), ("jev", "JEV")):
         out.append(f'<rect x="{x}" y="{y - 10}" width="12" height="12" rx="3" fill="{c[kind]}"/>')
-        body = f"{label} · {models[kind]} · n={stats[kind]['n']} valid trials"
+        body = f"{label} · {models[kind]} · n={stats[kind]['n']} valid trial{'s' if stats[kind]['n'] != 1 else ''}"
         text(x + 18, y, body, c["ink2"])
         x += 18 + len(body) * 6.4 + 32
     y += 30

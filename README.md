@@ -13,22 +13,30 @@ You can rerun it on your own topic in a few minutes.
 ## Results so far
 
 Topic: *looped transformers*, 10 arXiv candidates, graded 0–4 by a human.
+**These results come from a single trial: one request per ranker.**
 
 | | LLM (`anthropic/claude-sonnet-5.5`) | JEV (`typesafe/jev-1.13`) |
 |---|---|---|
-| Valid trials (of 5) | 1 | 5 |
-| Ranking quality (mean NDCG@5) | **1.000** | 0.978 |
-| Median latency | 4.93 s | **0.54 s** |
+| Trials | 1 | 1 |
+| Ranking quality (NDCG@5) | **1.000** | 0.978 |
+| Latency | 5.34 s | **0.61 s** (~9× faster) |
 | Cost per result | $0.0227 | **$0.00026** (~88× cheaper) |
 
 Both rankers put the human's top paper first and agree on 4 of their 5 picks.
 JEV's only miss was placing the grade-3 paper third instead of second.
 
+**Why only one trial:** the published numbers are trial 1 of a 5-trial run.
+In trials 2–5 every LLM request failed with HTTP 402 because the OpenRouter
+account ran out of credit, so those trials were dropped. Across all 5 JEV
+trials, the score was 0.978 every time and the top three picks never changed.
+Only 4th and 5th place varied, always among papers graded 2. Median JEV
+latency was 0.61 s. The run's `config.json` records this. `TRIALS` is set to 1 in
+[benchmark_rankers.py](src/ai_engg_day1/benchmark_rankers.py) to match.
+
 **Read these numbers with care:**
 
-- **Small sample.** The LLM has only 1 successful trial. Its other 4 attempts
-  failed because the OpenRouter account ran out of credit, not because of the
-  model.
+- **Small sample.** One trial can't show how much either ranker varies from
+  run to run, so treat the LLM figures in particular as a single data point.
 - **Coarse labels.** 7 of the 10 papers share the same grade (2), so any top 5
   that includes the grade-4 and grade-3 papers scores close to 1.0. This test
   mainly checks whether a ranker finds those two papers.
@@ -66,8 +74,9 @@ result (latency, cost, tokens, errors) and a summary.
 ## Run it yourself
 
 You need [uv](https://docs.astral.sh/uv/) and an
-[OpenRouter API key](https://openrouter.ai/keys) with a little credit. One run
-of 5 trials costs about $0.12, almost all of it LLM calls.
+[OpenRouter API key](https://openrouter.ai/keys) with credit on the account.
+Each trial costs about $0.023, almost all of it the LLM call. If you see HTTP
+402 errors, the account has run out of credit.
 
 ```bash
 git clone https://github.com/sabmaverick1305/jev-vs-llm-paper-ranking.git
@@ -84,8 +93,9 @@ uv run python src/ai_engg_day1/plot_benchmark.py
 ```
 
 The charts pool every saved run that used the same candidates, rubrics and
-labels as your newest run, so repeated runs add to the sample. Change
-`TRIALS` in `benchmark_rankers.py` to run more trials per pair. To compare a
+labels as your newest run, so repeated runs add to the sample. `TRIALS` in
+`benchmark_rankers.py` is 1; raise it (for example to 5) to measure how much
+results vary between runs. To compare a
 different LLM, set `BENCH_LLM_MODEL` in `.env` to any OpenRouter model that
 supports structured outputs.
 
